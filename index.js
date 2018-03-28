@@ -2,7 +2,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 /**
- * 
+ * 获取所有文件
  * @param {String} rootPath './'
  * @param {Array} exclude ['keyword', ...]
  */
@@ -37,7 +37,7 @@ function getFiles(rootPath = "./", exclude = []) {
 }
 
 /**
- * 
+ * 替换文本
  * @param {Array} files ['/hello/...', ...]
  * @param {Array} replacements [[keyword, replacement], ...] 区分大小写
  */
@@ -57,3 +57,9 @@ function replace(files = [], replacements = []) {
 getFiles().then(allFiles => {
     return replace(allFiles,[['ltoy-seed', 'hello-world']]);
 });
+
+
+exports.default = {
+    getFiles,
+    replace
+}
