@@ -54,9 +54,9 @@ function replace(files = [], replacements = []) {
 }
 
 
-getFiles().then(allFiles => {
-    return replace(allFiles,[['ltoy-seed', 'hello-world']]);
-});
+// getFiles().then(allFiles => {
+//     return replace(allFiles,[['ltoy-seed', 'hello-world']]);
+// });
 
 
 exports.default = {
