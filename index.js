@@ -43,15 +43,26 @@ function getFiles(rootPath = "./", exclude = []) {
  */
 function replace(files = [], replacements = []) {
     if (!files.length || !replacements.length) { return Promise.resolve(); }
-    return Promise.all(files.map(file => {
-        return fs.readFile(file, 'utf8').then(data => {
-            replacements.forEach(replacement => {
-                data = data.replace(new RegExp(replacement[0], 'g'), replacement[1])
-            })
-            return fs.writeFile(file, data, 'utf8');
+    return files.reduce((pms, file) => {
+        return pms.then(() => {
+            return replacePromise(file, replacements);
         })
-    }));
+    }, Promise.resolve());
 }
+
+function replacePromise(file, replacements) {
+    return fs.readFile(file, 'utf8').then(data => {
+        let hasChanged = false;
+        replacements.forEach(replacement => {
+            if (data.indexOf(replacement[0]) != -1) {
+                hasChanged = true;
+                data = data.replace(new RegExp(replacement[0], 'g'), replacement[1])
+            }
+        })
+        return hasChanged ? fs.writeFile(file, data, 'utf8') : Promise.resolve();
+    })
+}
+
 
 
 // getFiles().then(allFiles => {
